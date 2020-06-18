@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-OUTPUT_DIR="$SCRIPT_DIR/images"
+#
+# Primary variables you might want to change
+#
+OUTPUT_DIR=../changed_imgs
+DIFF_LIMIT=19
+SOURCE_WILDCARD=*.JPG
 
-CAPTURE_INTERVAL="1" # in seconds
-FFMPEG=ffmpeg
-command -v $FFMPEG >/dev/null 2>&1 || { FFMPEG=avconv ; }
+
+DIFF_IMG=diff.png
 DIFF_RESULT_FILE=$OUTPUT_DIR/diff_results.txt
 
 fn_cleanup() {
-	rm -f diff.png $DIFF_RESULT_FILE
+	rm -f $DIFF_IMG $DIFF_RESULT_FILE
 }
 
 fn_terminate_script() {
@@ -20,35 +23,22 @@ fn_terminate_script() {
 trap 'fn_terminate_script' SIGINT
 
 mkdir -p $OUTPUT_DIR
-PREVIOUS_FILENAME=""
-while true ; do
-	FILENAME="$OUTPUT_DIR/$(date +"%Y%m%dT%H%M%S").jpg"
-	echo "-----------------------------------------"
-	echo "Capturing $FILENAME"
-	if [[ "$OSTYPE" == "linux-gnu" ]]; then
-		$FFMPEG -loglevel fatal -f video4linux2 -i /dev/video0 -r 1 -t 0.0001 $FILENAME
-	elif [[ "$OSTYPE" == "darwin"* ]]; then
-		# Mac OSX
-		$FFMPEG -loglevel fatal -f avfoundation -i "default" -r 1 -t 0.0001 $FILENAME
+PREVIOUS_IMAGE=""
+for NEXT_IMAGE in $SOURCE_WILDCARD ; do    
+    if [[ "$PREVIOUS_IMAGE" != "" ]]; then
+	# For some reason, `compare` outputs the result to stderr so
+	# it's not possibly to directly get the result. It needs to be
+	# redirected to a temp file first.
+	compare -fuzz 20% -metric ae "$PREVIOUS_IMAGE" "$NEXT_IMAGE" $DIFF_IMG 2> $DIFF_RESULT_FILE
+	DIFF="$(cat $DIFF_RESULT_FILE)"
+	fn_cleanup
+	if [ "$DIFF" -gt $DIFF_LIMIT ]; then
+	    cp "$NEXT_IMAGE" $OUTPUT_DIR
+	    echo "keep $NEXT_IMAGE (Diff = $DIFF)"
+	    PREVIOUS_IMAGE="$NEXT_IMAGE"
 	fi
-	
-	if [[ "$PREVIOUS_FILENAME" != "" ]]; then
-		# For some reason, `compare` outputs the result to stderr so
-		# it's not possibly to directly get the result. It needs to be
-		# redirected to a temp file first.
-		compare -fuzz 20% -metric ae $PREVIOUS_FILENAME $FILENAME diff.png 2> $DIFF_RESULT_FILE
-		DIFF="$(cat $DIFF_RESULT_FILE)"
-		fn_cleanup
-		if [ "$DIFF" -lt 20 ]; then
-			echo "Same as previous image: delete (Diff = $DIFF)"
-			rm -f $FILENAME
-		else
-			echo "Different image: keep (Diff = $DIFF)"
-			PREVIOUS_FILENAME="$FILENAME"
-		fi
-	else
-		PREVIOUS_FILENAME="$FILENAME"
-	fi
-	
-	sleep $CAPTURE_INTERVAL
+    else
+	cp "$NEXT_IMAGE" $OUTPUT_DIR
+	PREVIOUS_IMAGE="$NEXT_IMAGE"
+    fi
 done
