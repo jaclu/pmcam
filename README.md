@@ -22,10 +22,11 @@ The original from laurent22/pmcam grabed images from a webcam. In my case I use 
 
 ## Configuration
 
-The two main config lines are:
+The primary config lines are:
 
 OUTPUT_DIR=../changed_imgs
 DIFF_LIMIT=19
+SOURCE_WILDCARD=*.JPG
 
 Set them as you see fit.
 
