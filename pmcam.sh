@@ -3,10 +3,12 @@
 #
 # Primary variables you might want to change
 #
-DIFF_LIMIT=1400
+DIFF_LIMIT=1400 # depends on image quality and change level that is of interest
 OUTPUT_DIR=../changed_$DIFF_LIMIT
 SOURCE_WILDCARD=*.JPG
+
 REMOVE_SOURCE=false  # also removes source image if not enough change detected
+DISPLAY_SKIPPED=true
 
 #
 # For TIME_STAMP & RESIZE, set them to "" if the feature is
@@ -62,15 +64,17 @@ for NEXT_IMAGE in $SOURCE_WILDCARD ; do
 	DIFF="$(cat $DIFF_RESULT_FILE)"
 
 	if [ "$DIFF" -lt $DIFF_LIMIT ]; then
-	    # use $NEXT_IMAGE over $CURENT_IMAGE in echo to skip path
-	    echo "   skipped $NEXT_IMAGE - $DIFF"
+	    if [ $DISPLAY_SKIPPED == true ]; then
+		# use $NEXT_IMAGE over $CURENT_IMAGE in echo to skip path
+		echo "    skipped $NEXT_IMAGE (Diff: $DIFF)"
+	    fi
 	    rm "$CURENT_IMAGE"
 	    if [ $REMOVE_SOURCE == true ]; then
 		rm "$NEXT_IMAGE"
 	    fi
 	else
 	    # use $NEXT_IMAGE over $CURENT_IMAGE in echo to skip path
-	    echo "keep $NEXT_IMAGE - $DIFF"
+	    echo "keep $NEXT_IMAGE (Diff: $DIFF)"
 	    PREVIOUS_IMAGE="$CURENT_IMAGE"
 	fi
     else
