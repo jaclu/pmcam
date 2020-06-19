@@ -28,6 +28,7 @@ The primary config lines are:
 	OUTPUT_DIR=
 	SOURCE_WILDCARD=
 	REMOVE_SOURCE=  true/false
+	DISPLAY_SKIPPED=  true/false
 	TIME_STAMP=
 	RESIZE=
 
