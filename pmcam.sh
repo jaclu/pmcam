@@ -7,6 +7,7 @@ DIFF_LIMIT=1400 # depends on image quality and change level that is of interest
 OUTPUT_DIR=../changed_$DIFF_LIMIT
 SOURCE_WILDCARD=*.JPG
 
+# Booleans set to true or false
 REMOVE_SOURCE=false  # also removes source image if not enough change detected
 DISPLAY_SKIPPED=true
 
