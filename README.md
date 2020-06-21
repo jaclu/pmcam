@@ -22,15 +22,18 @@ The original from laurent22/pmcam grabed images from a webcam. In my case I use 
 
 ## Configuration
 
-The primary config lines are:
+The primary config options are:
 
-	DIFF_LIMIT=
-	OUTPUT_DIR=
-	SOURCE_WILDCARD=
-	REMOVE_SOURCE=  true/false
-	DISPLAY_SKIPPED=  true/false
-	TIME_STAMP=
-	RESIZE=
+	DIFF_LIMIT       cut-off for what changes should be saved
+	OUTPUT_DIR       where to save matching imgs
+	SOURCE_WILDCARD  what images to process
+	TIME_STAMP       imagemagick code to set a time-stamp
+	RESIZE           set if images should be resized
+	
+	Booleans, true/false
+	REMOVE_SOURCE    Remove source images
+	DISPLAY_SKIPPED  display info about ignored images
+	SINGLE_PASS      run once or loop for ever
 
 Set them as you see fit.
 
@@ -41,7 +44,8 @@ cd to dir where images to be processed are located, then run it as:
 
 	./pmcam.sh
 
-To stop the script, press Ctrl + C.
+To stop the script, press Ctrl + C. If REMOVE_SOURCE is set you can stop
+and resume at any time.
 
 
 ## License
