@@ -9,16 +9,16 @@
 #     15000 - slightly sensitive but wont miss anything major
 #
 DIFF_LIMIT=15000 # depends on image quality and change level that is of interest
-OUTPUT_DIR=../filtered_$DIFF_LIMIT
+OUTPUT_DIR=filtered_$DIFF_LIMIT
 SOURCE_WILDCARD=.JPG # Do not include * this will fail the file listing!
 
 # Booleans, set to true or false
-REMOVE_SOURCE=false  # remoces processed source images
-DISPLAY_SKIPPED=false
+REMOVE_SOURCE=true  # remoces processed source images
+DISPLAY_SKIPPED=true
 # if true terminates once all images are processed, otherwise sleeps and
 # then rescans the directory. Usefull for monitoring when the camera is
 # running, and adding images in an ongoing fashion.
-SINGLE_PASS=true
+SINGLE_PASS=false
 
 
 #
@@ -185,6 +185,6 @@ while :; do
 	exit 0
     fi
     echo -n "===============   No files sleeping a while... "
-    sleep 1
+    sleep 2
     echo "Lets continue!   ==============="
 done
