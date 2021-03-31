@@ -9,6 +9,7 @@
 # hepp
 # 2344
 # 321
+# 321
 #
 # S SF 1280x960 16:9 (720 vid format) imgsize aprox 700KB
 #     15000 - slightly sensitive but wont miss anything major
