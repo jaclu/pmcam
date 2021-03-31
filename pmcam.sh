@@ -5,29 +5,6 @@
 #
 # Personal notes for DIFF_LIMIT
 # using an Olympus EM-5 II
-#
-# hepp
-# 2344
-# 321
-# 321
-# 333
-####
-# 12
-# 14
-# 25
-# 25
-# 32
-# 12
-# 13
-# 14
-# 15
-# 16
-# 17
-# 18
-# 19
-# 20
-# 21
-#
 # S SF 1280x960 16:9 (720 vid format) imgsize aprox 700KB
 #     15000 - slightly sensitive but wont miss anything major
 #
