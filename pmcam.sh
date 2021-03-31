@@ -3,8 +3,8 @@
 #
 # Primary variables you might want to change
 #
-# Personal notes for DIFF_LIMIT, using an Olympus EM-5 II
-#
+# Personal notes for DIFF_LIMIT
+# using an Olympus EM-5 II
 # S SF 1280x960 16:9 (720 vid format) imgsize aprox 700KB
 #     15000 - slightly sensitive but wont miss anything major
 #
